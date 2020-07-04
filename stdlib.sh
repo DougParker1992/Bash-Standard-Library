@@ -16,18 +16,58 @@
 # Library Index #
 #################
 
-# 1) Variables
-#    1.0) System Variables
-#    1.1) Terminal Formatting
-# 2) Functions
-#    2.0) System Functions
+# 1) Functions
+#    1.0) System Functions
+
+# 2) Variables
+#    2.0) System Variables
+#    2.1) Terminal Formatting
 
 ################
-# 1) Variables #
+# 1) Functions #
 ################
 
 #########################
-# 1.0) System Variables #
+# 1.0) System Functions #
+#########################
+
+get_operating_system ()
+{
+    uname -s
+}
+get_distribution ()
+{
+    if [ -f /etc/os-release ]; then
+        awk -F '=' '{print $2}' /etc/os-release | awk 'FNR == 1 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    elif [ -f /etc/lsb-release ]; then
+        awk -F '=' '{print $2}' /etc/lsb-release | awk 'FNR == 1 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    # elif [ -f /etc/*release ]; then
+    fi
+}
+get_version ()
+{
+    if [ -f /etc/os-release ]; then
+        awk -F '=' '{print $2}' /etc/os-release | awk 'FNR == 6 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    elif [ -f /etc/lsb-release ]; then
+        awk -F '=' '{print $2}' /etc/lsb-release | awk 'FNR == 2 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    # elif [ -f /etc/*release ]; then
+    fi
+}
+get_architecture ()
+{
+    uname -m
+}
+get_kernel ()
+{
+    uname -r
+}
+
+################
+# 2) Variables #
+################
+
+#########################
+# 2.0) System Variables #
 #########################
 
 export SYSTEM_OS="$(get_operating_system)"
@@ -37,7 +77,7 @@ export SYSTEM_DISTRIBUTION="$(get_distribution)"
 export SYSTEM_VERSION="$(get_version)"
 
 ############################
-# 1.1) Terminal Formatting #
+# 2.1) Terminal Formatting #
 ############################
 
 # Formatting
@@ -92,42 +132,3 @@ export CLR_LIGHTBLUE_BG="\e[104m"
 export CLR_LIGHTMAGENTA_BG="\e[105m"
 export CLR_LIGHTCYAN_BG="\e[106m"
 export CLR_WHITE_BG="\e[107m"
-
-################
-# 2) Functions #
-################
-
-#########################
-# 2.0) System Functions #
-#########################
-
-get_operating_system ()
-{
-    uname -s
-}
-get_distribution ()
-{
-    if [ -f /etc/os-release ]; then
-        awk -F '=' '{print $2}' /etc/os-release | awk 'FNR == 1 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
-    elif [ -f /etc/lsb-release ]; then
-        awk -F '=' '{print $2}' /etc/lsb-release | awk 'FNR == 1 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
-    # elif [ -f /etc/*release ]; then
-    fi
-}
-get_version ()
-{
-    if [ -f /etc/os-release ]; then
-        awk -F '=' '{print $2}' /etc/os-release | awk 'FNR == 6 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
-    elif [ -f /etc/lsb-release ]; then
-        awk -F '=' '{print $2}' /etc/lsb-release | awk 'FNR == 2 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
-    # elif [ -f /etc/*release ]; then
-    fi
-}
-get_architecture ()
-{
-    uname -m
-}
-get_kernel ()
-{
-    uname -r
-}
