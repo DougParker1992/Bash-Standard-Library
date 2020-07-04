@@ -16,16 +16,28 @@
 #################
 
 # 1) Variables
+#    1.0) System Variables
 #    1.1) Terminal Formatting
 # 2) Functions
+#    2.0) System Functions
 
-#############
-# Variables #
-#############
+################
+# 1) Variables #
+################
 
-#######################
-# Terminal Formatting #
-#######################
+#########################
+# 1.0) System Variables #
+#########################
+
+SYSTEM_OS="$(get_operating_system)"
+SYSTEM_KERNEL="$(get_kernel)"
+SYSTEM_ARCHITECTURE="$(get_architecture)"
+SYSTEM_DISTRIBUTION="$(get_distribution)"
+SYSTEM_VERSION="$(get_version)"
+
+############################
+# 1.1) Terminal Formatting #
+############################
 
 # Formatting
 FMT_END="\e[0m"
@@ -80,6 +92,41 @@ CLR_LIGHTMAGENTA_BG="\e[105m"
 CLR_LIGHTCYAN_BG="\e[106m"
 CLR_WHITE_BG="\e[107m"
 
-#############
-# Functions #
-#############
+################
+# 2) Functions #
+################
+
+#########################
+# 2.0) System Functions #
+#########################
+
+get_operating_system ()
+{
+    uname -s
+}
+get_distribution ()
+{
+    if [ -f /etc/os-release ]; then
+        awk -F '=' '{print $2}' /etc/os-release | awk 'FNR == 1 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    elif [ -f /etc/lsb-release ]; then
+        awk -F '=' '{print $2}' /etc/lsb-release | awk 'FNR == 1 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    # elif [ -f /etc/*release ]; then
+    fi
+}
+get_version ()
+{
+    if [ -f /etc/os-release ]; then
+        awk -F '=' '{print $2}' /etc/os-release | awk 'FNR == 6 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    elif [ -f /etc/lsb-release ]; then
+        awk -F '=' '{print $2}' /etc/lsb-release | awk 'FNR == 2 {print}' | tr -d '"' | tr '[:upper:]' '[:lower:]'
+    # elif [ -f /etc/*release ]; then
+    fi
+}
+get_architecture ()
+{
+    uname -m
+}
+get_kernel ()
+{
+    uname -r
+}
