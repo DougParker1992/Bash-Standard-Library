@@ -35,6 +35,7 @@ get_operating_system ()
 {
     uname -s
 }
+
 get_distribution ()
 {
     if [ -f /etc/os-release ]; then
@@ -44,6 +45,7 @@ get_distribution ()
     # elif [ -f /etc/*release ]; then
     fi
 }
+
 get_version ()
 {
     if [ -f /etc/os-release ]; then
@@ -53,13 +55,29 @@ get_version ()
     # elif [ -f /etc/*release ]; then
     fi
 }
+
 get_architecture ()
 {
     uname -m
 }
+
 get_kernel ()
 {
     uname -r
+}
+
+package_check ()
+{
+    if [[ $SYSTEM_DISTRIBUTION == "ubuntu" || $SYSTEM_DISTRIBUTION == "debian" ]]; then
+        dpkg -l "$1" &> /dev/null
+
+        if [ $? == 0 ]; then
+            return 0
+        else
+            return 1
+        fi
+
+    fi
 }
 
 ################
