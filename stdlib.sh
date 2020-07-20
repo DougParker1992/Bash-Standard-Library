@@ -69,9 +69,8 @@ get_kernel ()
 package_check ()
 {
     if [[ $SYSTEM_DISTRIBUTION == "ubuntu" || $SYSTEM_DISTRIBUTION == "debian" ]]; then
-        dpkg -l "$1" &> /dev/null
 
-        if [ $? == 0 ]; then
+        if dpkg -l "$1" &> /dev/null; then
             return 0
         else
             return 1
