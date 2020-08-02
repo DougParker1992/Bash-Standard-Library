@@ -110,7 +110,7 @@ output () {
     else
         DEBUG_LEVEL="$DEBUG_LEVEL"
     fi
-    printf "($(date +'%Y-%m-%d') $(date +'%T')) ["$DEBUG_LEVEL"] "$1"\n" | tee --append "$LOG_FILE"
+    printf "($(date +'%Y-%m-%d') $(date +'%T')) [$DEBUG_LEVEL] $1\n" | tee --append "$LOG_FILE"
 }
 
 lowercase () {
