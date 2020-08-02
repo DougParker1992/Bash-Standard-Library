@@ -12,25 +12,27 @@
 #                                                                                                      |___/  #
 ###############################################################################################################
 
-#################
-# Library Index #
-#################
+#############
+# Functions #
+#############
 
-# 1) Functions
-#    1.0) System Functions
-
-# 2) Variables
-#    2.0) System Variables
-#    2.1) Terminal Formatting
-
-################
-# 1) Functions #
-################
-
-#########################
-# 1.0) System Functions #
-#########################
-
+### <summary>
+###     get_operating_system
+###
+###     Get the name of the operating system.
+### </summary>
+### <returns>
+###     A string containing the name of the operating system.
+###
+###     String          Description
+###
+###     Linux           Linux
+###     Darwin          MacOS
+###     Cygwin          POSIX compatibility layer and Linux environment emulation for Windows
+###     MSYS            Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+###     FreeBSD         FreeBSD
+###     SunOS           Solaris
+### </returns>
 get_operating_system ()
 {
     uname -s
@@ -79,23 +81,56 @@ package_check ()
     fi
 }
 
-################
-# 2) Variables #
-################
+prompt () {
+    MESSAGE="$1"
+    while true; do
+        read -p "$MESSAGE [Y/N]: " PROMPT
+        PROMPT="$(lowercase "$PROMPT")"
+        if [[ "$PROMPT" == "y" || "$PROMPT" == "yes" ]]; then
+            return 0
+        elif [[ "$PROMPT" == "n" || "$PROMPT" == "no" ]]; then
+            return 1
+        fi
+    done
+}
 
-#########################
-# 2.0) System Variables #
-#########################
+output () {
+    DEBUG_LEVEL=${2:-"INFO"}
+    if [[ "$DEBUG_LEVEL" == "INFO" ]]; then
+        DEBUG_LEVEL="$CLR_BLUE$DEBUG_LEVEL$CLR_END"
+    elif [[ "$DEBUG_LEVEL" == "WARNING" ]]; then
+        DEBUG_LEVEL="$CLR_YELLOW$DEBUG_LEVEL$CLR_END"
+    elif [[ "$DEBUG_LEVEL" == "ERROR" ]]; then
+        DEBUG_LEVEL="$CLR_RED$DEBUG_LEVEL$CLR_END"
+    elif [[ "$DEBUG_LEVEL" == "SUCCESS" ]]; then
+        DEBUG_LEVEL="$CLR_GREEN$DEBUG_LEVEL$CLR_END"
+    elif [[ "$DEBUG_LEVEL" == "FAILURE" ]]; then
+        DEBUG_LEVEL="$CLR_RED$DEBUG_LEVEL$CLR_END"
+    else
+        DEBUG_LEVEL="$DEBUG_LEVEL"
+    fi
+    printf "($(date +'%Y-%m-%d') $(date +'%T')) [$DEBUG_LEVEL] $1\n" | tee --append $LOG_FILE
+}
+
+lowercase () {
+    echo "$1" | tr "[:upper:]" "[:lower:]"
+}
+
+uppercase () {
+    echo "$1" | tr "[:lower:]" "[:upper:]"
+}
+
+#############
+# Variables #
+#############
+
+export LOG_FILE="/var/log/$(basename "$0").log"
 
 export SYSTEM_OS="$(get_operating_system)"
 export SYSTEM_KERNEL="$(get_kernel)"
 export SYSTEM_ARCHITECTURE="$(get_architecture)"
 export SYSTEM_DISTRIBUTION="$(get_distribution)"
 export SYSTEM_VERSION="$(get_version)"
-
-############################
-# 2.1) Terminal Formatting #
-############################
 
 # Formatting
 export FMT_END="\e[0m"
