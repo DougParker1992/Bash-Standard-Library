@@ -84,7 +84,7 @@ package_check ()
 prompt () {
     MESSAGE="$1"
     while true; do
-        read -p "$MESSAGE [Y/N]: " PROMPT
+        IFS="" read -p "$MESSAGE [Y/N]: " -r PROMPT
         PROMPT="$(lowercase "$PROMPT")"
         if [[ "$PROMPT" == "y" || "$PROMPT" == "yes" ]]; then
             return 0
