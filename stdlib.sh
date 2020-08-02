@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2155
+# shellcheck disable=SC2059
 
 ###############################################################################################################
 #  ____            _        _____ _                  _               _   _      _ _                           #
@@ -109,7 +110,7 @@ output () {
     else
         DEBUG_LEVEL="$DEBUG_LEVEL"
     fi
-    printf "(%s %s) [%s] %s\n" "$(date +'%Y-%m-%d')" "$(date +'%T')" "$DEBUG_LEVEL" "$1" | tee --append "$LOG_FILE"
+    printf "($(date +'%Y-%m-%d') $(date +'%T')) ["$DEBUG_LEVEL"] "$1"\n" | tee --append "$LOG_FILE"
 }
 
 lowercase () {
