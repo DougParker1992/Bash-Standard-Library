@@ -102,7 +102,7 @@ move ()
 
 compress ()
 {
-    if [ $1 == "--help" ]; then
+    if [ "$1" == "--help" ]; then
         output "Usage: compress <input-file-directory> <output-file>"
         return 1
     elif [ -z "$1" ]; then
@@ -112,12 +112,12 @@ compress ()
         output "You must supply an output file." "ERROR"
         return 1
     fi
-    tar -czf $2 $1
+    tar -czf "$2" "$1"
 }
 
 extract ()
 {
-    if [ $1 == "--help" ]; then
+    if [ "$1" == "--help" ]; then
         output "Usage: extract <input-file> <output-directory>"
         return 1
     elif [ -z "$1" ]; then
@@ -127,7 +127,7 @@ extract ()
         output "You must supply an output directory." "ERROR"
         return 1
     fi
-    sudo tar -C $2 -xf $1
+    sudo tar -C "$2" -xf "$1"
 }
 
 encrypt ()
