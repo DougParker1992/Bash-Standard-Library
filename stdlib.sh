@@ -82,6 +82,63 @@ package_check ()
     fi
 }
 
+copy ()
+{
+    if [ -z "$1" ]; then
+        output "You must supply a source directory." "ERROR"
+        return 1
+    elif [ -z "$2" ]; then
+        output "You must supply a destination directory." "ERROR"
+        return 1
+    fi
+    rsync --archive --verbose --progress --human-readable "$1" "$2"
+}
+
+move ()
+{
+    # mv "$1" "$2"
+}
+
+compress ()
+{
+    if [ $1 == "--help" ]; then
+        output "Usage: compress <input-file-directory> <output-file>"
+        return 1
+    elif [ -z "$1" ]; then
+        output "You must supply an input file or directory." "ERROR"
+        return 1
+    elif [ -z "$2" ]; then
+        output "You must supply an output file." "ERROR"
+        return 1
+    fi
+    tar -czf $2 $1
+}
+
+extract ()
+{
+    if [ $1 == "--help" ]; then
+        output "Usage: extract <input-file> <output-directory>"
+        return 1
+    elif [ -z "$1" ]; then
+        output "You must supply an input file." "ERROR"
+        return 1
+    elif [ -z "$2" ]; then
+        output "You must supply an output directory." "ERROR"
+        return 1
+    fi
+    sudo tar -C $2 -xf $1
+}
+
+encrypt ()
+{
+
+}
+
+decrypt ()
+{
+
+}
+
 prompt () {
     MESSAGE="$1"
     while true; do
@@ -125,7 +182,7 @@ uppercase () {
 # Variables #
 #############
 
-export LOG_FILE="/var/log/$(basename "$0").log"
+export LOG_FILE=/dev/null
 
 export SYSTEM_OS="$(get_operating_system)"
 export SYSTEM_KERNEL="$(get_kernel)"
