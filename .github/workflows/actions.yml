@@ -24,5 +24,5 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
-          cat "$SSH_KEY" >> ~/bash-standard-library.rsa
+          echo "$SSH_KEY" >> ~/bash-standard-library.rsa
           ssh root@73.96.60.151 -i ~/bash-standard-library.rsa "chmod +x /opt/server-manager/app.py && /opt/server-manager/app.py install -u"
