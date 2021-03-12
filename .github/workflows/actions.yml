@@ -2,9 +2,9 @@ name: CI / CD
 
 on:
   push:
-    branches: [ python-rewrite ]
+    branches: [ master ]
   pull_request:
-    branches: [ python-rewrite ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
