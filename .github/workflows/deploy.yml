@@ -29,9 +29,11 @@ jobs:
               sudo git pull
               sudo git stash pop
               cd -
+              sudo cat /opt/lib/bash-standard-library/stdlib.sh > ~/.bash_aliases
           else
               cd /opt/lib
               sudo git clone https://github.com/douglasparker/bash-standard-library.git
               cd -
+              sudo cat /opt/lib/bash-standard-library/stdlib.sh > ~/.bash_aliases
           fi
           EOF
