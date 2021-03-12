@@ -1,10 +1,10 @@
-name: Actions
+name: CI / CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ python-rewrite ]
   pull_request:
-    branches: [ master ]
+    branches: [ python-rewrite ]
   workflow_dispatch:
 
 jobs:
@@ -22,8 +22,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run a multi-line script
         env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          echo "$SSH_KEY" >> ~/bash-standard-library.rsa
+          echo "$SSH_PRIVATE_KEY" >> ~/bash-standard-library.rsa
           chmod 600 ~/bash-standard-library.rsa
-          ssh root@73.96.60.151 -o StrictHostKeyChecking=no -i ~/bash-standard-library.rsa "chmod +x /opt/server-manager/app.py && /opt/server-manager/app.py install -u"
+          ssh root@73.96.60.151 -o StrictHostKeyChecking=no -i ~/bash-standard-library.rsa <<EOF
+          mkdir -p /opt/lib
+          cd /opt/lib && git clone https://github.com/douglasparker/bash-standard-library.git && cd -
+          cd /opt/lib/bash-standard-library && git stash && git pull && git pop stash && cd -
+          EOF
