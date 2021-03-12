@@ -84,10 +84,10 @@ package_check ()
     if [[ $SYSTEM_DISTRIBUTION == "ubuntu" || $SYSTEM_DISTRIBUTION == "debian" ]]; then
 
         if dpkg -l "$1" &> /dev/null; then
-            output "The package $FMT_UNDERLINE"$1"$FMT_UNDERLINE_END is installed." "SUCCESS"
+            output "The package \"$FMT_UNDERLINE\"\"$1\"\"$FMT_UNDERLINE_END\" is installed." "SUCCESS"
             return 0
         else
-            output "The package $FMT_UNDERLINE"$1"$FMT_UNDERLINE_END is not installed." "WARNING"
+            output "The package \"$FMT_UNDERLINE\"\"$1\"\"$FMT_UNDERLINE_END\" is not installed." "WARNING"
             return 1
         fi
 
