@@ -1,4 +1,4 @@
-name: CI / CD
+name: Deploy
 
 on:
   push:
@@ -8,35 +8,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
+  vps1:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Super-Linter
-      uses: docker://github/super-linter:v2.1.0
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Run a multi-line script
+      - name: Deploy
         env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_USER }}
         run: |
           echo "$SSH_PRIVATE_KEY" >> ~/bash-standard-library.rsa
           chmod 600 ~/bash-standard-library.rsa
-          
-          ssh root@73.96.60.151 -o StrictHostKeyChecking=no -i ~/bash-standard-library.rsa <<EOF
+
+          ssh "$SSH_USER"@"$SSH_HOST" -o StrictHostKeyChecking=no -i ~/bash-standard-library.rsa <<EOF
           if [ -d /opt/lib/bash-standard-library ]; then
               cd /opt/lib/bash-standard-library
-              git stash
-              git pull
-              git stash pop
+              sudo git stash
+              sudo git pull
+              sudo git stash pop
               cd -
           else
               cd /opt/lib
-              git clone https://github.com/douglasparker/bash-standard-library.git
+              sudo git clone https://github.com/douglasparker/bash-standard-library.git
               cd -
           fi
           EOF
