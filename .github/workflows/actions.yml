@@ -25,4 +25,5 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
           echo "$SSH_KEY" >> ~/bash-standard-library.rsa
+          chmod 600 ~/bash-standard-library.rsa
           ssh root@73.96.60.151 -o StrictHostKeyChecking=no -i ~/bash-standard-library.rsa "chmod +x /opt/server-manager/app.py && /opt/server-manager/app.py install -u"
