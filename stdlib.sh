@@ -97,6 +97,7 @@ copy ()
 move ()
 {
     # mv "$1" "$2"
+    true
 }
 
 compress ()
@@ -131,12 +132,12 @@ extract ()
 
 encrypt ()
 {
-
+    true
 }
 
 decrypt ()
 {
-
+    true
 }
 
 prompt () {
