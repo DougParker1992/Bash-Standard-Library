@@ -26,8 +26,17 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" >> ~/bash-standard-library.rsa
           chmod 600 ~/bash-standard-library.rsa
+          
           ssh root@73.96.60.151 -o StrictHostKeyChecking=no -i ~/bash-standard-library.rsa <<EOF
-          mkdir -p /opt/lib
-          cd /opt/lib && git clone https://github.com/douglasparker/bash-standard-library.git && cd -
-          cd /opt/lib/bash-standard-library && git stash && git pull && git pop stash && cd -
+          if [ -d /opt/lib/bash-standard-library ]; then
+              cd /opt/lib/bash-standard-library
+              git stash
+              git pull
+              git stash pop
+              cd -
+          else
+              cd /opt/lib
+              git clone https://github.com/douglasparker/bash-standard-library.git
+              cd -
+          fi
           EOF
