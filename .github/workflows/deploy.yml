@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Run a multi-line script
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          cat $SSH_KEY >> ~/.ssh/bash-standard-library.rsa
+          ssh root@73.96.60.151 -i ~/.ssh/bash-standard-library.rsa "chmod +x /opt/server-manager/app.py && /opt/server-manager/app.py install -u"
