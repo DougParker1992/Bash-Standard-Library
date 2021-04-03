@@ -21,7 +21,7 @@ alias ls="ls -F"
 alias ll="ls -lh"
 alias lt="ls --human-readable --size -1 -S --classify" # Sort by file size
 alias count="find . -type f | wc -l" # Count files
-alias df="df -h -x tmpfs -x overlay && du -hs /storage/media/movies && du -hs /storage/media/tv-shows && du -hs /storage/media/downloads/nzbget/complete && du -hs /storage/media/downloads/nzbget/in-progress"
+alias df="df -h -x tmpfs -x overlay && du -hs /storage/media/movies && du -hs /storage/media/tv-shows && du -hs /storage/media/anime && du -hs /storage/media/downloads/nzbget/complete && du -hs /storage/media/downloads/nzbget/in-progress"
 
 #############
 # Functions #
